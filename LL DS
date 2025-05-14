@@ -1,0 +1,40 @@
+#include<stdio.h>  // Include standard input/output library
+#include<stdlib.h>  // Include standard library for dynamic memory allocation
+
+int main() {  // Main function where program execution begins
+    struct node {  // Define a struct to represent a node in the linked list
+        int data;  // Store integer data in the node
+        struct node *next;  // Pointer to the next node in the list
+    } *new, *head = NULL, *temp;  // Declare pointers for new node, head of list, and temporary node
+
+    char ch;  // Store user's choice to add more nodes
+    int value;  // Store the value entered by the user
+
+    do {  // Loop to create linked list nodes until user chooses to stop
+        new = (struct node*)malloc(sizeof(struct node));  // Dynamically allocate memory for new node
+        printf("Enter value: ");  // Prompt user to enter a value
+        scanf("%d", &value);  // Read the value entered by the user
+        new->data = value;  // Store the value in the new node
+        new->next = NULL;  // Initialize next pointer to NULL
+
+        if (head == NULL) {  // Check if the list is empty
+            head = new;  // Set the new node as the head of the list
+            temp = new;  // Set the temporary node to the new node
+        } else {  // If the list is not empty
+            temp->next = new;  // Link the new node to the end of the list
+            temp = temp->next;  // Move the temporary node to the new node
+        }
+
+        printf("Add node (y/n): ");  // Ask user if they want to add another node
+        scanf(" %c", &ch);  // Read user's choice
+    } while (ch == 'y');  // Continue loop if user chooses to add another node
+
+    temp = head;  // Reset temporary node to the head of the list
+    while (temp != NULL) {  // Loop through the linked list
+        printf("%d->", temp->data);  // Print the value of the current node
+        temp = temp->next;  // Move to the next node
+    }
+    printf("NULL\n");  // Print NULL to indicate the end of the list
+
+    return 0;  // Return 0 to indicate successful program execution
+}
