@@ -1,0 +1,90 @@
+#include <stdio.h>  // Standard library for input/output operations (printf, scanf)
+#include <stdlib.h> // Library for memory management (malloc, free)
+
+// Define a structure for a linked list node
+struct node {
+    int data;        // Stores integer data
+    struct node *next; // Pointer to the next node in the linked list
+};
+
+// Function to append a node at the end of the linked list
+void appendNode(struct node **head, int value) {
+    struct node *new = malloc(sizeof(struct node)), *temp = *head; // Allocate memory for new node
+    new->data = value; // Assign data value to new node
+    new->next = NULL; // Set new node's next pointer to NULL (last node)
+
+    if (!*head) { // If list is empty, set head to new node
+        *head = new;
+    } else { // Traverse to the last node and attach new node
+        while (temp->next) // Move temp to the last node
+            temp = temp->next;
+        temp->next = new; // Link last node to the new node
+    }
+}
+
+// Function to delete a node at a specific position
+void deleteAtPos(struct node **head, int pos) {
+    if (*head == NULL) { // If list is empty, nothing to delete
+        printf("List is empty, nothing to delete.\n");
+        return;
+    }
+
+    struct node *temp = *head, *d; // Initialize traversal pointers
+    printf("Enter position needed to be deleted: "); // Ask user for position
+    scanf("%d", &pos); // Read the position input
+
+    if (pos == 0) { // If position is 0, delete the first node
+        *head = temp->next; // Update head to the next node
+        printf("Deleted node is %d\n", temp->data); // Print deleted node's data
+        free(temp); // Free memory of the deleted node
+        return;
+    }
+
+    for (int i = 0; temp && i < pos - 1; i++) // Traverse to (pos-1)th node
+        temp = temp->next;
+
+    if (!temp || !temp->next) { // If position is out of bounds
+        printf("Invalid position.\n");
+        return;
+    }
+
+    d = temp->next; // Store reference to node being deleted
+    printf("Deleted node is %d\n", d->data); // Print deleted node
+    temp->next = d->next; // Adjust links to skip the deleted node
+    d->next = NULL; // Unlink deleted node
+    free(d); // Free memory of deleted node
+}
+
+// Function to print the linked list
+void printList(struct node *head) {
+    while (head) { // Traverse through the list until reaching NULL
+        printf("%d -> ", head->data); // Print node's data
+        head = head->next; // Move to next node
+    }
+    printf("NULL\n"); // Indicate the end of the linked list
+}
+
+int main() {
+    struct node *head = NULL; // Initialize an empty linked list
+    char ch; // Variable to store user's choice (y/n)
+    int value, pos; // Variables for input values and position
+
+    // Creating linked list dynamically based on user input
+    do {
+        printf("Enter a value: "); // Ask user for a node value
+        scanf("%d", &value); // Read user input
+        appendNode(&head, value); // Append node at the end
+        printf("Add more? (y/n): "); // Ask user if they want to continue adding nodes
+        scanf(" %c", &ch); // Read user's response
+    } while (ch == 'y'); // Loop continues if user enters 'y'
+
+    printf("Original Linked List: "); // Print the list before deletion
+    printList(head);
+
+    deleteAtPos(&head, pos); // Delete node at given position
+
+    printf("Linked List after deletion: "); // Print the list after deletion
+    printList(head);
+
+    return 0; // End program successfully
+}
