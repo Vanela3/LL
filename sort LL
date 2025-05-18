@@ -1,0 +1,73 @@
+#include <stdio.h>  // Standard input-output library for printing and taking input
+#include <stdlib.h> // Library for memory allocation functions like malloc()
+
+// Define the structure for a node in the linked list
+struct Node {
+    int data;  // Stores the data value of the node
+    struct Node* next;  // Points to the next node in the list
+};
+
+// Function to sort the linked list using Bubble Sort
+void bubbleSort(struct Node* head) {
+    struct Node* t1, *t2;  // Temporary pointers for traversal
+    int temp;  // Variable for swapping data
+    
+    if (head == NULL) return;  // If list is empty, return without sorting
+
+    // Outer loop: Traverse the list
+    for (t1 = head; t1 != NULL; t1 = t1->next) {
+        // Inner loop: Compare adjacent nodes and swap if necessary
+        for (t2 = head; t2->next != NULL; t2 = t2->next) {
+            if (t2->data > t2->next->data) {  // Swap if current node is greater than next node
+                temp = t2->data;
+                t2->data = t2->next->data;
+                t2->next->data = temp;
+            }
+        }
+    }
+}
+
+// Function to add a node to the linked list
+void insertNode(struct Node** head, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node)); // Allocate memory for new node
+    new_node->data = data;  // Assign data to new node
+    new_node->next = *head;  // Point new node to the current head
+    *head = new_node;  // Update head to the new node
+}
+
+// Function to display the linked list
+void displayList(struct Node* head) {
+    struct Node* temp = head;  // Temporary pointer for traversal
+    while (temp != NULL) {  // Loop through the list
+        printf("%d -> ", temp->data);  // Print data of each node
+        temp = temp->next;  // Move to the next node
+    }
+    printf("NULL\n");  // Indicate the end of the list
+}
+
+int main() {
+    struct Node* head = NULL;  // Initialize head pointer
+    char choice;  // Variable to store user choice
+    int data;  // Variable to store node data
+
+    // Creating linked list dynamically based on user input
+    do {
+        printf("Enter data: ");  // Prompt user for node data
+        scanf("%d", &data);  // Read input data
+        insertNode(&head, data);  // Insert node into linked list
+        
+        printf("Do you want to add another node? (y/n): ");  // Ask user if they want to continue
+        scanf(" %c", &choice);  // Read user choice
+
+    } while (choice == 'y' || choice == 'Y');  // Continue loop if user enters 'y'
+
+    printf("Original List: ");  // Print original linked list before sorting
+    displayList(head);  // Display linked list
+
+    bubbleSort(head);  // Call function to sort the linked list
+
+    printf("Sorted List: ");  // Print sorted linked list
+    displayList(head);  // Display sorted linked list
+
+    return 0;  // Return 0 indicating successful execution
+}
