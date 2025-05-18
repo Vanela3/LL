@@ -1,0 +1,65 @@
+#include <stdio.h>  // Standard library for input/output operations (printf, scanf)
+#include <stdlib.h> // Library for memory management (malloc, free)
+
+// Define a structure for a linked list node
+struct node {
+    int data;        // Stores integer data
+    struct node *next; // Pointer to the next node
+};
+
+// Function to append a node at the end of the linked list
+void appendNode(struct node **head, int value) {
+    struct node *new = malloc(sizeof(struct node)), *temp = *head; // Allocate memory for the new node
+    new->data = value; // Assign the given value to the new node
+    new->next = NULL; // Set next as NULL since it’s the last node
+
+    if (!*head) { // If the list is empty, set head to the new node
+        *head = new;
+    } else { // If list exists, traverse to the last node and append
+        while (temp->next) // Move temp to the last node
+            temp = temp->next;
+        temp->next = new; // Link last node to the new node
+    }
+}
+
+int main() {
+    struct node *head = NULL, *temp; // Initialize head as NULL (empty list)
+    char ch; // Variable to store user choice (y/n)
+    int value; // Variable to store user input data
+
+    // Create linked list dynamically based on user input
+    do {
+        printf("Enter a value: "); // Ask user for value
+        scanf("%d", &value); // Read user input
+        appendNode(&head, value); // Append node at the end
+        printf("Add more? (y/n): "); // Ask user if they want to add more nodes
+        scanf(" %c", &ch); // Read user's response
+    } while (ch == 'y'); // Continue if user enters 'y'
+
+    printf("Original Linked List: ");
+    temp = head; // Initialize temp to head for traversal
+    while (temp) { // Traverse and print list
+        printf("%d -> ", temp->data); // Print node value
+        temp = temp->next; // Move to next node
+    }
+    printf("NULL\n"); // Indicate end of list
+
+    // Delete the first node dynamically
+    temp = head; // Set temp to head (first node)
+    if (temp) { // If list is not empty
+        printf("Deleted node is %d\n", temp->data); // Print deleted node value
+        head = head->next; // Update head to next node (second node)
+    } else {
+        printf("List is empty, nothing to delete.\n"); // If list is empty
+    }
+
+    printf("Linked List after deletion: ");
+    temp = head; // Reset temp to head for traversal
+    while (temp) { // Traverse and print updated list
+        printf("%d -> ", temp->data); // Print node value
+        temp = temp->next; // Move to next node
+    }
+    printf("NULL\n"); // Indicate end of list
+
+    return 0; // End of program
+}
