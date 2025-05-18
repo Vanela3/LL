@@ -1,0 +1,64 @@
+#include <stdio.h>  // Standard library for input/output operations (printf, scanf)
+#include <stdlib.h> // Library for memory management (malloc, free)
+
+struct node {       // Define a structure for a linked list node
+    int data;       // Store the data value of the node
+    struct node *next; // Pointer to the next node in the linked list
+};
+
+// Function to insert a new node at the beginning of the linked list
+void insertBegin(struct node **head, int value) {
+    struct node *new = malloc(sizeof(struct node)); // Allocate memory for the new node
+    new->data = value; // Assign user-provided value to the new node
+    new->next = *head; // Link the new node to the previous head
+    *head = new;       // Update head pointer to the new node
+}
+
+// Function to print all nodes in the linked list
+void printList(struct node *head) {
+    while (head) { // Loop through the linked list until reaching NULL
+        printf("%d -> ", head->data); // Print the current node’s value followed by an arrow
+        head = head->next; // Move to the next node
+    }
+    printf("NULL\n"); // Indicate the end of the linked list
+}
+
+int main() { 
+    struct node *head = NULL, *new; // Initialize the linked list with an empty head
+    char ch;  // Variable to store user's choice (y/n)
+    int value; // Variable to store node values
+
+    // Create a linked list dynamically based on user input
+    do {
+        new = (struct node*)malloc(sizeof(struct node)); // Allocate memory for a new node
+        printf("Enter a value: "); // Prompt user for a node value
+        scanf("%d", &value); // Read user input
+        new->data = value; // Assign user-provided value to the node
+        new->next = head; // Point new node to current head
+        head = new; // Update head pointer to the new node
+        printf("Add more? (y/n): "); // Ask the user if they want to add more nodes
+        scanf(" %c", &ch); // Read the user's response
+    } while (ch == 'y'); // Continue the loop if the user enters 'y'
+
+    // Print the original linked list before inserting a new node
+    printf("Original Linked List: ");
+    printList(head);
+
+    // Insert a new node at the beginning
+    printf("Enter value to insert at beginning: ");
+    scanf("%d", &value);
+    insertBegin(&head, value);
+
+    // Print the updated linked list after inserting the new node
+    printf("Linked List after inserting at beginning: ");
+    printList(head);
+
+    // Free allocated memory to prevent memory leaks
+    while (head) {
+        new = head;   // Store current node in temporary pointer
+        head = head->next; // Move head to the next node
+        free(new);    // Free memory occupied by the current node
+    }
+
+    return 0; // Exit the program successfully
+}
