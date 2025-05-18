@@ -1,0 +1,83 @@
+#include <stdio.h>  // Include standard I/O functions like printf, scanf
+#include <stdlib.h> // Include memory management functions like malloc, free
+
+// Define a structure for a linked list node
+struct node {
+    int data;        // Integer data stored in the node
+    struct node *next; // Pointer to the next node in the linked list
+};
+
+// Function to append a node at the end of the linked list
+void appendNode(struct node **head, int value) {
+    struct node *new = malloc(sizeof(struct node)), *temp = *head; // Allocate memory for new node
+    new->data = value; // Assign data value to new node
+    new->next = NULL; // Set new node's next pointer to NULL (last node)
+
+    if (!*head) { // If list is empty, set head to new node
+        *head = new;
+    } else { // Traverse to the last node and attach new node
+        while (temp->next) // Move temp to the last node
+            temp = temp->next;
+        temp->next = new; // Link last node to the new node
+    }
+}
+
+// Function to delete the last node in the linked list
+void deleteLastNode(struct node **head) {
+    if (*head == NULL) { // If the list is empty, nothing to delete
+        printf("List is empty, nothing to delete.\n");
+        return;
+    }
+
+    struct node *temp = *head, *prev = NULL; // Initialize traversal pointers
+
+    while (temp->next) { // Traverse to the last node
+        prev = temp; // Store the previous node before moving to next
+        temp = temp->next;
+    }
+
+    printf("Deleted node is %d\n", temp->data); // Print deleted node's data
+
+    if (prev) { // If list has more than one node
+        prev->next = NULL; // Unlink last node from list
+    } else { // If only one node exists, empty the list
+        *head = NULL;
+    }
+
+    free(temp); // Free memory of the last node
+}
+
+// Function to print the linked list
+void printList(struct node *head) {
+    while (head) { // Traverse through the list until reaching NULL
+        printf("%d -> ", head->data); // Print node's data
+        head = head->next; // Move to the next node
+    }
+    printf("NULL\n"); // Indicate end of the linked list
+}
+
+int main() {
+    struct node *head = NULL, *temp; // Initialize an empty linked list
+    char ch; // Variable to store user's choice (y/n)
+    int value; // Variable to store node values
+
+    // Dynamically create the linked list based on user input
+    do {
+        printf("Enter a value: "); // Prompt user for node value
+        scanf("%d", &value); // Read input value
+        appendNode(&head, value); // Append node at the end of the list
+        printf("Add more? (y/n): "); // Ask user if they want to continue adding nodes
+        scanf(" %c", &ch); // Read user's response
+    } while (ch == 'y'); // Loop continues if user enters 'y'
+
+    printf("Original Linked List: "); // Print the list before deletion
+    printList(head);
+
+    // Delete the last node dynamically
+    deleteLastNode(&head);
+
+    printf("Linked List after deletion: "); // Print the list after deletion
+    printList(head);
+
+    return 0; // Exit the program successfully
+}
