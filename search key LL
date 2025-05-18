@@ -1,0 +1,60 @@
+#include <stdio.h>  // Standard input-output library for printing and taking input
+#include <stdlib.h> // Library for memory allocation functions like malloc()
+
+// Define a structure for a node in the linked list
+struct Node {
+    int data;  // Stores the data value of the node
+    struct Node* next;  // Points to the next node in the list
+};
+
+int main() {
+    struct Node* head = NULL;  // Initialize the head pointer to NULL (empty list)
+    struct Node* temp = NULL;  // Temporary pointer for traversal
+    char choice;  // Variable to store user choice (y/n)
+    int key, flag = 0;  // Key is the element to search, flag is for search result
+
+    // Creating linked list dynamically based on user input
+    do {
+        struct Node* new_node = (struct Node*)malloc(sizeof(struct Node)); // Allocate memory for new node
+        if (new_node == NULL) {  // Check if memory allocation failed
+            printf("Memory allocation failed\n");
+            return 1;  // Exit program if memory allocation fails
+        }
+
+        printf("Enter data: ");  // Prompt user to enter data for the node
+        scanf("%d", &new_node->data);  // Read input data for node
+        new_node->next = NULL;  // Initialize next pointer of new node to NULL
+
+        if (head == NULL) {  // If list is empty, set head to new node
+            head = new_node;
+        } else {  // Otherwise, link last node to new node
+            temp->next = new_node;
+        }
+        temp = new_node;  // Move temp pointer to the newly created node
+
+        printf("Do you want to add another node? (y/n): ");  // Ask if user wants to continue adding nodes
+        scanf(" %c", &choice);  // Read user choice ('y' or 'n')
+
+    } while (choice == 'y' || choice == 'Y');  // Continue loop if user enters 'y'
+
+    // Searching for the key element in the linked list
+    printf("Enter key element to search: ");  // Prompt user for the search key
+    scanf("%d", &key);  // Read the key element to find
+
+    temp = head;  // Start searching from the head of the linked list
+    while (temp != NULL) {  // Traverse the list until the end
+        if (key == temp->data) {  // If key matches the current node's data
+            flag = 1;  // Set flag to indicate element found
+            break;  // Exit loop since element is found
+        }
+        temp = temp->next;  // Move to the next node
+    }
+
+    if (flag == 1) {  // If element was found
+        printf("Key element found\n");  
+    } else {  // If element was not found
+        printf("Key element not found\n");
+    }
+
+    return 0;  // Return 0 indicating successful execution
+}
