@@ -1,0 +1,78 @@
+#include <stdio.h>  // Standard input-output library for printing and taking input
+#include <stdlib.h> // Library for memory allocation functions like malloc()
+
+// Define the structure for a node in the linked list
+struct Node {
+    int data;  // Stores the data value of the node
+    struct Node* next;  // Pointer to the next node in the list
+};
+
+// Function to reverse the linked list
+void reverse(struct Node** head) {
+    struct Node* prev = NULL;  // Pointer to store the previous node
+    struct Node* current = *head;  // Pointer to track the current node
+    struct Node* next = NULL;  // Pointer to store the next node
+
+    while (current != NULL) {  // Loop until the end of the list
+        next = current->next;  // Store next node before changing links
+        current->next = prev;  // Reverse the current node's pointer
+        prev = current;  // Move prev to current
+        current = next;  // Move current to next node
+    }
+
+    *head = prev;  // Update head to the new first node
+}
+
+// Function to append a node at the end of the linked list
+void insertNode(struct Node** head, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node)); // Allocate memory for new node
+    new_node->data = data;  // Assign data to new node
+    new_node->next = NULL;  // Set next pointer to NULL (new end node)
+
+    if (*head == NULL) {  // If list is empty, set head to new node
+        *head = new_node;
+    } else {  // Otherwise, find the last node and add the new node after it
+        struct Node* temp = *head;
+        while (temp->next != NULL) {  // Traverse until last node
+            temp = temp->next;
+        }
+        temp->next = new_node;  // Link last node to new node
+    }
+}
+
+// Function to display the linked list
+void displayList(struct Node* head) {
+    struct Node* temp = head;  // Temporary pointer for traversal
+    while (temp != NULL) {  // Loop through the list
+        printf("%d -> ", temp->data);  // Print data of each node
+        temp = temp->next;  // Move to the next node
+    }
+    printf("NULL\n");  // Indicate the end of the list
+}
+
+int main() {
+    struct Node* head = NULL;  // Initialize head pointer
+    char choice;  // Variable to store user choice
+    int data;  // Variable to store node data
+
+    // Creating linked list dynamically based on user input
+    do {
+        printf("Enter data: ");  // Ask user for node data
+        scanf("%d", &data);  // Read input data
+        insertNode(&head, data);  // Insert node at the end of the list
+        
+        printf("Do you want to add another node? (y/n): ");  // Ask if user wants to continue
+        scanf(" %c", &choice);  // Read user choice (y/n)
+
+    } while (choice == 'y' || choice == 'Y');  // Continue loop if user enters 'y'
+
+    printf("Original List: ");  // Print original linked list before reversing
+    displayList(head);  // Display linked list
+
+    reverse(&head);  // Call function to reverse the linked list
+
+    printf("Reversed List: ");  // Print reversed linked list
+    displayList(head);  // Display reversed linked list
+
+    return 0;  // Return 0 indicating successful execution
+}
