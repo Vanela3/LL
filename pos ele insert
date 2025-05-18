@@ -1,0 +1,83 @@
+#include <stdio.h>  // Include standard I/O library for printf and scanf
+#include <stdlib.h> // Include standard library for memory allocation (malloc, free)
+
+// Define a structure for a linked list node
+struct node {
+    int data;        // Store the integer data value
+    struct node *next; // Pointer to the next node in the linked list
+};
+
+// Function to insert a node at a specific position in the linked list
+void insertAtPos(struct node **head, int value, int pos) {
+    struct node *new = malloc(sizeof(struct node)); // Allocate memory for the new node
+    new->data = value; // Assign the value to the new node
+
+    if (pos == 0) { // If position is 0, insert the node at the beginning
+        new->next = *head; // Link new node to the current head
+        *head = new; // Update head to the new node
+        return; // Exit the function
+    }
+
+    struct node *temp = *head; // Temporary pointer to traverse the list
+    for (int i = 0; temp && i < pos - 1; i++) // Loop to move temp to position-1
+        temp = temp->next; // Move temp to the next node
+
+    if (temp) { // If temp is not NULL, insert new node after it
+        new->next = temp->next; // Link new node to the next node
+        temp->next = new; // Link previous node to the new node
+    } else { // If position is invalid, free allocated memory
+        free(new); // Prevent memory leak by freeing unused node
+    }
+}
+
+// Function to print the linked list
+void printList(struct node *head) {
+    while (head) { // Loop through the linked list until NULL
+        printf("%d -> ", head->data); // Print the data of the current node
+        head = head->next; // Move to the next node
+    }
+    printf("NULL\n"); // Indicate the end of the linked list
+}
+
+// Function to append a node at the end of the linked list
+void appendNode(struct node **head, int value) {
+    struct node *new = malloc(sizeof(struct node)), *temp = *head; // Allocate memory for new node
+    new->data = value; // Assign value to the new node
+    new->next = NULL; // Set next of new node to NULL since it's the last node
+
+    if (!*head) // If list is empty, set head to new node
+        *head = new;
+    else { // If list is not empty, traverse to the last node
+        while (temp->next) // Loop until temp points to the last node
+            temp = temp->next; // Move temp to the next node
+        temp->next = new; // Link last node to new node
+    }
+}
+
+int main() {
+    struct node *head = NULL; // Initialize head as NULL (empty linked list)
+    char ch; // Variable to store user choice (y/n)
+    int value, pos; // Variables for node data and position input
+
+    do { // Loop to take user input and create linked list
+        printf("Enter a value: "); // Ask user for a node value
+        scanf("%d", &value); // Read the integer input
+        appendNode(&head, value); // Append the node at the end of the linked list
+        printf("Add more? (y/n): "); // Ask user if they want to add more nodes
+        scanf(" %c", &ch); // Read user's choice
+    } while (ch == 'y'); // Continue adding nodes if user enters 'y'
+
+    printf("Original Linked List: "); // Print the linked list before insertion
+    printList(head); // Call function to print linked list
+
+    printf("Enter position to insert element: "); // Ask user for the position
+    scanf("%d", &pos); // Read position input
+    printf("Enter value to insert: "); // Ask user for value to insert
+    scanf("%d", &value); // Read value input
+    insertAtPos(&head, value, pos); // Insert the new node at the given position
+
+    printf("Linked List after insertion: "); // Print linked list after insertion
+    printList(head); // Call function to print updated linked list
+
+    return 0; // End of program
+}
