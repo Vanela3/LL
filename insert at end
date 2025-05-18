@@ -1,0 +1,64 @@
+#include <stdio.h>  // Includes standard input/output functions (printf, scanf)
+#include <stdlib.h> // Includes functions for memory management (malloc, free)
+
+struct node {       // Defines a structure for a linked list node
+    int data;       // Stores the data value of the node
+    struct node *next; // Pointer to the next node in the linked list
+};
+
+// Function to insert a node at the end of the linked list
+void insertEnd(struct node **head, int value) {
+    struct node *new = malloc(sizeof(struct node)); // Allocates memory for new node
+    new->data = value; // Stores user-provided value in the new node
+    new->next = NULL; // Sets next pointer to NULL (since it's the last node)
+
+    if (!*head) { // If the list is empty, set new node as head
+        *head = new;
+        return;
+    }
+
+    struct node *temp = *head; // Temporary pointer for traversal
+    while (temp->next) temp = temp->next; // Traverse to the last node
+    temp->next = new; // Link last node to new node
+}
+
+// Function to print the linked list
+void printList(struct node *head) {
+    while (head) { // Loops through the linked list
+        printf("%d -> ", head->data); // Prints node value followed by an arrow
+        head = head->next; // Moves to the next node
+    }
+    printf("NULL\n"); // Indicates the end of the linked list
+}
+
+int main() {
+    struct node *head = NULL; // Initializes an empty linked list
+    char ch; // Stores user choice ('y' or 'n')
+    int value; // Stores user-input node values
+
+    // Create a linked list dynamically based on user input
+    do {
+        printf("Enter a value: "); // Asks user for a node value
+        scanf("%d", &value); // Reads user input
+        insertEnd(&head, value); // Inserts value at the end
+        printf("Add more? (y/n): "); // Asks if user wants to add more nodes
+        scanf(" %c", &ch); // Reads user response ('y' or 'n')
+    } while (ch == 'y'); // Loop continues if user enters 'y'
+
+    printList(head); // Displays the original linked list
+
+    printf("Enter value to insert at the end: "); // Prompts user to insert a new value
+    scanf("%d", &value); // Reads the user-input value
+    insertEnd(&head, value); // Inserts the value at the end
+
+    printList(head); // Displays the updated linked list
+
+    struct node *temp; // Temporary pointer for memory cleanup
+    while (head) { // Loops through the list to free memory
+        temp = head; // Stores current node in temporary pointer
+        head = head->next; // Moves head to the next node
+        free(temp); // Frees the current node
+    }
+
+    return 0; // Exits the program successfully
+}
