@@ -1,0 +1,28 @@
+#include <stdio.h>  // Standard input/output library for printf, scanf
+#define SIZE 5  // Define the maximum stack size
+
+int stack[SIZE];  // Array to represent stack
+int top = -1;  // Initialize top to -1 (stack is empty)
+
+// Function to push an element onto the stack
+void push() {
+    int ele;
+
+    // Check if stack is full
+    if (top == SIZE - 1) {
+        printf("Stack is overflow\n");  // Display overflow message
+    } else {
+        printf("Enter element: ");  // Prompt user to enter a number
+        scanf("%d", &ele);  // Read the user's input
+
+        top = top + 1;  // Move top to the next available index
+        stack[top] = ele;  // Store the entered value in stack
+
+        printf("After push: %d\n", ele);  // Show the pushed value
+    }
+}
+
+int main() {
+    push();  // Call push function to test insertion
+    return 0;  // End program successfully
+}
