@@ -1,0 +1,21 @@
+#include <stdio.h>   // Standard input/output library for handling input/output functions
+#define SIZE 5       // Defines the maximum stack size
+
+int main() { 
+    int stack[SIZE]; // Declares an array to store stack elements
+    int top = -1;    // Initializes `top` as -1, meaning the stack is empty
+    int i;           // Loop variable for iteration
+
+    // Check if stack is empty
+    if (top == -1) { // If `top` is -1, the stack has no elements
+        printf("Stack is empty\n"); // Display message for empty stack
+    } else { 
+        printf("Elements in the stack:\n"); // Heading for stack elements display
+        for (i = top; i >= 0; i--) { // Start from the top and move down
+            printf("%d \t", stack[i]); // Print each stack element with a tab space
+        }
+        printf("\n"); // Newline for clean output formatting
+    }
+
+    return 0; // End program successfully
+}
