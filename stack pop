@@ -1,0 +1,16 @@
+#include <stdio.h>   // Standard input/output library
+#define SIZE 5       // Defines the maximum stack size
+
+int main() { 
+    int stack[SIZE]; // Array to store stack elements
+    int top = -1;    // Initializes `top` as -1 (stack is empty)
+
+    if (top == -1) { // Checks if stack is empty
+        printf("Stack is underflow\n"); // Displays underflow message
+    } else { 
+        printf("Deleted element from stack is %d\n", stack[top]); // Shows the element to be deleted
+        top = top - 1; // Decreases `top` to remove the top element
+    }
+
+    return 0; // Ends the program successfully
+}
